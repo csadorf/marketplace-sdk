@@ -1,5 +1,6 @@
 import os
 import requests
+from urllib.parse import urljoin
 
 
 class MarketPlace:
@@ -25,6 +26,7 @@ class MarketPlace:
     def url_userinfo(self):
         return f'{self.endpoint}/user-service/userinfo'
 
-    def get(self, url, **kwargs):
+    def get(self, path, **kwargs):
         kwargs.setdefault('headers', {}).update(self.default_headers)
-        return requests.get(url=url, **kwargs)
+        full_url = urljoin(self.endpoint, path)
+        return requests.get(url=full_url, **kwargs)
