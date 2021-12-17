@@ -25,11 +25,14 @@ class MarketPlace:
             "Authorization": f"Bearer {self.access_token}",
         }
 
-    @property
-    def url_userinfo(self):
-        return f"{self.endpoint}/user-service/userinfo"
-
     def get(self, path, **kwargs):
         kwargs.setdefault("headers", {}).update(self.default_headers)
         full_url = urljoin(self.endpoint, path)
         return requests.get(url=full_url, **kwargs)
+
+    @property
+    def url_userinfo(self):
+        return f"{self.endpoint}/user-service/userinfo"
+
+    def userinfo(self, **kwargs):
+        return self.get(self.url_userinfo, **kwargs).json()
