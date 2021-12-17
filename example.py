@@ -1,23 +1,22 @@
-from marketplace import MarketPlace
 from pprint import pprint
 
+from marketplace import MarketPlace
 
 mp = MarketPlace()
 
-r = mp.get(mp.url_userinfo)
+# Show the user information
+response = mp.get(mp.url_userinfo)
+response.raise_for_status()
+pprint(response.json())
+
+SOME_MARKEPTLACE_APP_ID = "203522a2-dfac-481c-bd9e-46806b6d06f1"
+
+# Check whether the application can be reached and is alive:
+r = mp.get(f"/api/proxy/proxy/{SOME_MARKEPTLACE_APP_ID}/heartbeat")
 r.raise_for_status()
 pprint(r.json())
 
-
-OPTIMADE_APP_ID='4909efbc-c61a-4b77-8bdc-6df139f98092'
-r = mp.get(f'/api/proxy/proxy/{OPTIMADE_APP_ID}/heartbeat')
-r.raise_for_status()
-print(r.content)
-
-r = mp.get(f'/api/proxy/proxy/{OPTIMADE_APP_ID}/test')
-r.raise_for_status()
-pprint(r.json())
-
-r = mp.get(f'/api/proxy/proxy/{OPTIMADE_APP_ID}/structures/1')
+# List available data sets
+r = mp.get(f"/api/proxy/proxy/{SOME_MARKEPTLACE_APP_ID}/datasets/")
 r.raise_for_status()
 print(r.content)
