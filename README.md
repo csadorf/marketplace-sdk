@@ -2,37 +2,56 @@
 
 Python Software Development Toolkit (SDK) to communicate with the Materials MarketPlace platform.
 
-## Usage
+## Installation
 
-To install the package, execute
+To install the package, execute:
+
+```console
+pip install marketplace-sdk --extra-index-url https://__token__:<your_personal_token>@gitlab.cc-asp.fraunhofer.de/api/v4/projects/27227/packages/pypi/simple
+```
+
+See [here](https://gitlab.cc-asp.fraunhofer.de/MarketPlace/python-sdk/-/packages) for more information on how to install the package from the MarketPlace GitLab package registry.
+
+Alternatively, you can also install the package directly from GitHub with:
 
 ```console
 pip install git+https://github.com/csadorf/marketplace-sdk
 ```
 
-Then use it communicate with the MarketPlace, platform, example:
+## Usage
+
+To use this package to communicate with the MarketPlace platform, first set the two environment variables `$MP_HOST` and `$MP_ACCESS_TOKEN` (as is the case for example on https://materials-marketplace.aiidalab.net), and then you can start making requests:
+
+```python
+from marketplace import MarketPlace
+
+MP = MarketPlace()
+print(MP.get(MP.url_userinfo))
+```
+
+Here is a slightly more elaborate example:
 
 ```python
 from pprint import pprint
 
 from marketplace import MarketPlace
 
-mp = MarketPlace()
+MP = MarketPlace()
 
 # Show the user information
-response = mp.get(mp.url_userinfo)
+response = MP.get(MP.url_userinfo)
 response.raise_for_status()
 pprint(response.json())
 
 SOME_MARKEPTLACE_APP_ID = "203522a2-dfac-481c-bd9e-46806b6d06f1"
 
 # Check whether the application can be reached and is alive:
-r = mp.get(f"/api/proxy/proxy/{SOME_MARKEPTLACE_APP_ID}/heartbeat")
+r = MP.get(f"/api/proxy/proxy/{SOME_MARKEPTLACE_APP_ID}/heartbeat")
 r.raise_for_status()
 pprint(r.json())
 
 # List available data sets
-r = mp.get(f"/api/proxy/proxy/{SOME_MARKEPTLACE_APP_ID}/datasets/")
+r = MP.get(f"/api/proxy/proxy/{SOME_MARKEPTLACE_APP_ID}/datasets/")
 r.raise_for_status()
 print(r.content)
 ```
@@ -53,6 +72,7 @@ To create a new release, clone the repository, install development dependencies 
 This will:
 
   1. Create a tagged release with bumped version and push it to the repository.
+  2. Trigger a GitLab CI workflow that publishes the package on the [GitLab package registry](https://gitlab.cc-asp.fraunhofer.de/MarketPlace/python-sdk/-/packages).
   2. Trigger a GitHub actions workflow that creates a GitHub release and publishes it on PyPI.
 
 Additional notes:
