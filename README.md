@@ -1,3 +1,5 @@
+**Now maintained at https://github.com/materials-marketplace/python-sdk!**
+
 # MarketPlace SDK
 
 Python Software Development Toolkit (SDK) to communicate with the Materials MarketPlace platform.
